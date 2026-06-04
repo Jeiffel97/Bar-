@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview Logo Transparent</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:sans-serif;background:#111}
+
+.label{color:rgba(255,255,255,.4);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;text-align:center;padding:1.2rem 0 .6rem}
+
+/* ── Test 1 : sur fond sombre (comme la vidéo) ── */
+.bg-dark{
+  background:linear-gradient(135deg,#1a0614 0%,#2d0a22 50%,#0a0608 100%);
+  display:flex;align-items:center;justify-content:center;gap:3rem;padding:3rem 2rem;
+}
+
+/* ── Test 2 : sur fond vidéo simulé ── */
+.bg-video{
+  background:url('Photo/ChatGPT Image 4 juin 2026, 21_41_21.png') center/cover no-repeat;
+  display:flex;align-items:center;justify-content:center;gap:3rem;padding:3rem 2rem;
+  position:relative;
+}
+.bg-video::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.bg-video > *{position:relative;z-index:1}
+
+/* ── Test 3 : sur fond rose bonbon ── */
+.bg-rose{
+  background:linear-gradient(135deg,#ff5a9e,#ff8fc0);
+  display:flex;align-items:center;justify-content:center;gap:3rem;padding:3rem 2rem;
+}
+
+/* Méthodes de suppression fond blanc */
+
+/* Méthode A — mix-blend-mode multiply (fond blanc disparaît) */
+.logo-multiply{
+  height:80px;width:auto;
+  mix-blend-mode:multiply;
+}
+
+/* Méthode B — filter pour logo blanc sur fond sombre */
+.logo-invert{
+  height:80px;width:auto;
+  filter:invert(1) brightness(1.2);
+}
+
+/* Méthode C — drop-shadow uniquement (garde fond blanc) */
+.logo-shadow{
+  height:80px;width:auto;
+  filter:drop-shadow(0 2px 12px rgba(255,90,158,.6));
+}
+
+/* Logo original pour comparaison */
+.logo-original{height:80px;width:auto}
+
+.card{display:flex;flex-direction:column;align-items:center;gap:.8rem}
+.card span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.sep{width:100%;height:1px;background:rgba(255,255,255,.1);margin:.5rem 0}
+</style>
+</head>
+<body>
+
+<div class="label">Nouveau logo — fond transparent (Logo-removebg-preview.png)</div>
+<div class="bg-dark">
+  <div class="card">
+    <img src="Logo-removebg-preview.png" class="logo-original" alt="logo">
+    <span>Sur fond sombre</span>
+  </div>
+</div>
+<div class="bg-rose">
+  <div class="card">
+    <img src="Logo-removebg-preview.png" class="logo-original" alt="logo">
+    <span>Sur fond rose</span>
+  </div>
+</div>
+<div class="bg-video">
+  <div class="card">
+    <img src="Logo-removebg-preview.png" class="logo-original" alt="logo">
+    <span>Sur vidéo/photo</span>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<div class="label">Ancien logo (référence)</div>
+<div class="bg-dark">
+  <div class="card">
+    <img src="Logo.png" class="logo-original" alt="logo">
+    <span>Ancien logo</span>
+  </div>
+</div>
+
+<div style="color:rgba(255,255,255,.35);text-align:center;padding:2rem 1rem;font-size:.75rem">
+  ✦ Page de prévisualisation — aucune modification du site
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cocksinels – Bar à Cocktails Événementiel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --beige:#f5ede0;--beige-dark:#e8d8c4;--beige-deep:#d4bfa0;
+  --rose:#e8a0a8;--rose-light:#f2c5cb;--rose-dark:#c4737e;
+  --rouge:#b03040;--rouge-dark:#8a1e2c;
+  --gold:#c9973a;--gold-light:#e8c97a;
+  --dark:#1a0e0a;--dark-mid:#2d1a12;
+  --text-dark:#2d1a12;--text-mid:#5c3d2e;--white:#fdfaf6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--beige-dark)}
+::-webkit-scrollbar-thumb{background:var(--rose-dark);border-radius:3px}
+
+/* VIDÉOS DE FOND */
+.bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:none}
+.bg-video[src]:not([src=""]) {display:block}
+.bg-video-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:1;display:none}
+.bg-video[src]:not([src=""]) ~ .bg-video-overlay,
+section:has(.bg-video[src]:not([src=""])) .bg-video-overlay{display:block}
+/* Quand vidéo active sur accueil : cacher fruits, adapter texte */
+#accueil:has(.bg-video[src]:not([src=""])) .hero-fruit{display:none}
+#accueil:has(.bg-video[src]:not([src=""])){background:transparent}
+#cocktails:has(.bg-video[src]:not([src=""])){background:transparent}
+#cocktails:has(.bg-video[src]:not([src=""])) .cocktails-hero-inner{position:relative;z-index:2}
+#cocktails:has(.bg-video[src]:not([src=""])) .cocktails-hero-inner .section-title{color:var(--white)}
+#cocktails:has(.bg-video[src]:not([src=""])) .cocktails-hero-inner p{color:rgba(245,237,224,.8)}
+#cocktails:has(.bg-video[src]:not([src=""])) .hero-eyebrow{color:var(--rose-light)}
+/* Contenu accueil au-dessus de la vidéo */
+#accueil .hero-content{z-index:2}
+#accueil .scroll-band{z-index:2;position:relative}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 3rem;
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(200,160,120,0.25);
+  transition:background .4s;
+  background:rgba(245,237,224,0.93);
+}
+nav.nav-dark{background:rgba(26,14,10,0.93)}
+.nav-logo-wrap{display:flex;align-items:center;gap:.7rem;cursor:pointer;text-decoration:none}
+.nav-logo-img{height:44px;width:auto;object-fit:contain;mix-blend-mode:multiply}
+nav.nav-dark .nav-logo-img{mix-blend-mode:lighten}
+.nav-brand-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--text-dark);letter-spacing:.02em}
+nav.nav-dark .nav-brand-name{color:var(--white)}
+.nav-links{display:flex;gap:.3rem;list-style:none;align-items:center}
+.nav-btn{
+  text-decoration:none;font-size:.82rem;letter-spacing:.07em;text-transform:uppercase;
+  font-weight:500;cursor:pointer;padding:.5rem 1rem;border-radius:25px;
+  transition:all .3s;border:none;font-family:'DM Sans',sans-serif;background:transparent;
+  color:var(--text-mid);
+}
+.nav-btn:hover,.nav-btn.active{color:var(--rouge);background:rgba(176,48,64,.08)}
+nav.nav-dark .nav-btn{color:rgba(245,237,224,.7)}
+nav.nav-dark .nav-btn:hover,nav.nav-dark .nav-btn.active{color:var(--gold-light);background:rgba(201,151,58,.1)}
+.nav-cta{background:var(--rouge)!important;color:var(--white)!important;padding:.5rem 1.3rem!important;box-shadow:0 4px 15px rgba(176,48,64,.3)}
+.nav-cta:hover{background:var(--rouge-dark)!important;transform:translateY(-1px)}
+
+/* SECTIONS */
+section{min-height:100vh}
+
+/* HERO */
+#accueil{
+  min-height:100vh;position:relative;display:flex;align-items:center;
+  overflow:hidden;
+  background:linear-gradient(135deg,#f7ede2 0%,#f2d9c8 35%,#eec9b0 65%,#e8b89a 100%);
+}
+/* Fruits flottants */
+.hero-fruit{position:absolute;font-size:3.5rem;pointer-events:none;filter:drop-shadow(0 8px 16px rgba(0,0,0,.12));animation:fruitFloat var(--dur,7s) ease-in-out infinite var(--delay,0s);z-index:1}
+.has-bg-video .hero-fruit{display:none}
+.fruit-1{top:10%;left:12%;font-size:3rem;--dur:7s;--delay:0s}
+.fruit-2{top:8%;right:28%;font-size:3.2rem;--dur:9s;--delay:1.2s}
+.fruit-3{top:30%;right:10%;font-size:2.8rem;--dur:8s;--delay:0.5s}
+.fruit-4{bottom:28%;left:7%;font-size:3.8rem;--dur:10s;--delay:2s}
+.fruit-5{bottom:20%;right:22%;font-size:3rem;--dur:7.5s;--delay:0.8s}
+.fruit-6{top:55%;right:38%;font-size:2.5rem;--dur:11s;--delay:3s}
+@keyframes fruitFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-18px) rotate(5deg)}}
+.hero-content{position:relative;z-index:2;max-width:700px;padding:9rem 3rem 5rem 5rem}
+.hero-badge{display:inline-block;background:var(--rouge);color:var(--white);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;padding:.35rem 1rem;border-radius:20px;margin-bottom:1.5rem;animation:fadeUp .8s ease forwards}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,7vw,6rem);font-weight:900;line-height:1.05;color:var(--dark);margin-bottom:.8rem;animation:fadeUp .8s ease .15s both}
+.hero-title strong{font-weight:900;font-style:normal;color:var(--dark)}
+.hero-title em{font-style:italic;color:var(--rouge);font-weight:900}
+.hero-slogan{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);font-style:italic;color:var(--text-mid);margin-bottom:1rem;animation:fadeUp .8s ease .3s both}
+.hero-slogan-herb{font-size:1.5rem;display:block;margin-bottom:.5rem}
+.hero-desc{font-size:.95rem;line-height:1.75;color:var(--text-mid);max-width:500px;margin-bottom:2.5rem;animation:fadeUp .8s ease .45s both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .8s ease .6s both}
+.scroll-band{background:var(--rouge);color:var(--white);overflow:hidden;padding:.8rem 0;white-space:nowrap}
+.band-track{display:inline-flex;gap:2rem;animation:bandScroll 22s linear infinite}
+.band-track span{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic}
+.band-track .sep{color:var(--rose-light);opacity:.6}
+@keyframes bandScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* NOTRE HISTOIRE (À PROPOS) */
+#notrehistoire{background:var(--white);padding:5rem 0}
+.apropos-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;border-radius:24px;padding:5rem;box-shadow:0 4px 60px rgba(0,0,0,.06)}
+.apropos-text p{color:var(--text-mid);line-height:1.8;margin-bottom:1rem;font-size:.95rem}
+.apropos-icons{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+.icon-pill{display:flex;align-items:center;gap:.5rem;background:var(--beige);padding:.5rem 1rem;border-radius:20px;font-size:.82rem;color:var(--text-mid)}
+.video-placeholder{width:100%;aspect-ratio:16/9;background:var(--beige-dark);border-radius:20px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;border:2px dashed var(--beige-deep);overflow:hidden}
+.video-placeholder iframe{width:100%;height:100%;border:none;border-radius:20px}
+.video-placeholder-text{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--text-mid);font-size:.95rem;text-align:center;padding:2rem}
+
+/* EVENTS */
+#prestations{background:var(--beige);text-align:center;padding:6rem 3rem}
+.events-header{max-width:600px;margin:0 auto 3rem}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
+.event-card{background:var(--white);border-radius:20px;padding:2rem 1.5rem;transition:transform .3s,box-shadow .3s;border:1px solid rgba(200,160,120,.2)}
+.event-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.1)}
+.event-icon{font-size:2.8rem;margin-bottom:1rem}
+.event-card h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--dark);margin-bottom:.5rem}
+.event-card p{font-size:.82rem;color:var(--text-mid);line-height:1.6}
+
+/* COCKTAILS */
+#cocktails{background:var(--beige);padding:6rem 0 0}
+.cocktails-hero-inner{text-align:center;padding:3rem 2rem 2rem;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.7rem;font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--rose-dark);margin-bottom:1.5rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:30px;height:1px;background:var(--rose-dark);opacity:.4}
+.filter-bar{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+.filter-btn{background:rgba(255,255,255,.6);border:1.5px solid rgba(200,160,120,.3);color:var(--text-mid);padding:.5rem 1.2rem;border-radius:30px;font-size:.78rem;letter-spacing:.06em;cursor:pointer;transition:all .3s;font-family:'DM Sans',sans-serif}
+.filter-btn:hover,.filter-btn.active{background:var(--rouge);border-color:var(--rouge);color:var(--white);box-shadow:0 4px 15px rgba(176,48,64,.35)}
+.cocktails-section{padding:0 3rem 6rem;background:var(--beige)}
+.cocktails-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem;max-width:1300px;margin:0 auto}
+.cocktail-card{position:relative;border-radius:24px;overflow:hidden;cursor:pointer;background:var(--white);border:1px solid rgba(200,160,120,.2);box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease;animation:cardReveal .6s ease both}
+.cocktail-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 30px 60px rgba(176,48,64,.18)}
+@keyframes cardReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.card-visual{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.card-bg{position:absolute;inset:0;transition:transform .6s ease}
+.cocktail-card:hover .card-bg{transform:scale(1.08)}
+.card-emoji{font-size:5rem;position:relative;z-index:2;filter:drop-shadow(0 8px 16px rgba(0,0,0,.2));animation:gentleSway 4s ease-in-out infinite}
+.cocktail-card:hover .card-emoji{transform:scale(1.15) rotate(5deg)}
+@keyframes gentleSway{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(4deg) translateY(-8px)}}
+.card-bubbles{position:absolute;bottom:0;left:0;right:0;height:100%;pointer-events:none;overflow:hidden}
+.bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);animation:bubbleRise var(--dur,3s) ease-in infinite var(--delay,0s);width:var(--size,6px);height:var(--size,6px);left:var(--left,50%);bottom:-20px}
+@keyframes bubbleRise{0%{transform:translateY(0) scale(1);opacity:.5}100%{transform:translateY(-220px) scale(.2);opacity:0}}
+.card-badge{position:absolute;top:12px;right:12px;z-index:3;background:var(--gold);color:var(--dark);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.28rem .65rem;border-radius:20px}
+.card-badge.virgin{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff}
+.card-content{padding:1.4rem 1.6rem 1.6rem;background:var(--white)}
+.card-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:.25rem}
+.card-subtitle{font-size:.72rem;color:var(--rouge);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;opacity:.8}
+.card-ingr-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-mid);opacity:.5;margin-bottom:.5rem}
+.card-ingr-list{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem}
+.ingr-tag{background:var(--beige);color:var(--text-mid);font-size:.72rem;padding:.2rem .6rem;border-radius:12px}
+.card-divider{height:1px;background:var(--beige-dark);margin:.8rem 0}
+.card-flavors{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem}
+.flavor-dot{font-size:.68rem;color:var(--rose-dark);background:var(--rose-light);background:rgba(232,160,168,.2);padding:.2rem .5rem;border-radius:10px}
+.card-cta{background:transparent;border:1.5px solid var(--rouge);color:var(--rouge);padding:.5rem 1rem;border-radius:20px;font-size:.78rem;cursor:pointer;transition:all .3s;font-family:'DM Sans',sans-serif;width:100%}
+.card-cta:hover{background:var(--rouge);color:var(--white)}
+
+/* CTA BAND */
+.cta-band{background:var(--rouge);padding:4rem 2rem;text-align:center}
+.cta-band h2{font-family:'Playfair Display',serif;color:var(--white);font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:1rem}
+.cta-band p{color:rgba(253,250,246,.7);margin-bottom:2rem;font-size:.95rem}
+
+/* RÉALISATIONS */
+#realisations{background:var(--dark);min-height:100vh;color:var(--white)}
+.real-hero{
+  min-height:50vh;position:relative;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;padding:9rem 2rem 4rem;
+  background:radial-gradient(ellipse at 50% 60%,#3a0a18 0%,#1a0e0a 60%,#0d0608 100%);
+}
+.rh-ring{position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+.rh-ring-1{width:400px;height:400px;border:1px solid rgba(201,151,58,.08);animation:rotateSlow 30s linear infinite}
+.rh-ring-2{width:650px;height:650px;border:1px solid rgba(176,48,64,.06);animation:rotateSlow 45s linear infinite reverse}
+@keyframes rotateSlow{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.real-hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:900;background:linear-gradient(135deg,var(--white) 0%,var(--gold-light) 50%,var(--rose-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.8rem;animation:fadeUp .8s ease .15s both}
+.real-hero p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:rgba(245,237,224,.6);animation:fadeUp .8s ease .3s both}
+.type-filters{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;padding:2.5rem 2rem 1rem;max-width:900px;margin:0 auto}
+.type-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);color:rgba(245,237,224,.7);padding:.55rem 1.3rem;border-radius:30px;font-size:.8rem;letter-spacing:.06em;cursor:pointer;transition:all .3s;font-family:'DM Sans',sans-serif}
+.type-btn:hover,.type-btn.active{background:var(--rouge);border-color:var(--rouge);color:var(--white)}
+.gallery-section{padding:1rem 2rem 4rem;max-width:1300px;margin:0 auto}
+.gallery-grid{columns:3;column-gap:1.2rem}
+@media(max-width:900px){.gallery-grid{columns:2}}
+@media(max-width:500px){.gallery-grid{columns:1}}
+.gallery-item{break-inside:avoid;margin-bottom:1.2rem;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;background:var(--dark-mid);transition:transform .3s,box-shadow .3s}
+.gallery-item:hover{transform:scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 50%);opacity:0;transition:opacity .3s;border-radius:16px;display:flex;align-items:flex-end;padding:1.2rem}
+.gallery-item:hover .gallery-overlay{opacity:1}
+.gallery-label{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--white);font-style:italic}
+.gallery-type-badge{position:absolute;top:10px;left:10px;background:var(--rouge);color:var(--white);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:12px;opacity:.9}
+.fake-img{width:100%;display:block;border-radius:16px;position:relative;overflow:hidden}
+.fake-img-inner{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;background:linear-gradient(135deg,var(--dark-mid),#3a1a22)}
+.fake-img-inner .fi-emoji{font-size:3.5rem;opacity:.7}
+.fake-img-inner .fi-label{font-family:'Cormorant Garamond',serif;font-size:.85rem;font-style:italic;color:rgba(245,237,224,.4)}
+
+/* VIDÉOS SECTION */
+.videos-section{padding:4rem 2rem 5rem;max-width:1300px;margin:0 auto;text-align:center}
+.videos-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;background:linear-gradient(135deg,var(--white) 0%,var(--gold-light) 50%,var(--rose-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
+.videos-subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:rgba(245,237,224,.55);display:block;margin-bottom:3rem}
+.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1050px;margin:0 auto}
+@media(max-width:768px){.videos-grid{grid-template-columns:1fr;max-width:360px}}
+.video-slot{position:relative;aspect-ratio:9/16;border-radius:20px;overflow:hidden;cursor:pointer;background:#1a0e0a;border:1px solid rgba(255,255,255,.08);transition:transform .3s,box-shadow .3s}
+.video-slot:hover{transform:scale(1.02);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.video-slot-bg{position:absolute;inset:0;transition:transform .5s ease}
+.video-slot:hover .video-slot-bg{transform:scale(1.05)}
+.video-platform-badge{position:absolute;top:14px;right:14px;z-index:4;background:rgba(10,10,10,.75);backdrop-filter:blur(8px);color:var(--white);font-size:.68rem;font-weight:600;letter-spacing:.08em;padding:.3rem .75rem;border-radius:20px;border:1px solid rgba(255,255,255,.15)}
+.video-play-btn{position:absolute;bottom:30%;left:50%;transform:translateX(-50%);z-index:4;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--rouge),var(--rouge-dark));display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(176,48,64,.6);transition:transform .3s,box-shadow .3s}
+.video-slot:hover .video-play-btn{transform:translateX(-50%) scale(1.1);box-shadow:0 12px 40px rgba(176,48,64,.8)}
+.video-slot-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 60%);padding:1.5rem 1rem 1rem;z-index:3;text-align:left}
+.video-slot-label{display:block;font-family:'Playfair Display',serif;font-size:.9rem;color:var(--white);font-style:italic}
+.video-slot-hint{display:block;font-size:.7rem;color:rgba(245,237,224,.45);margin-top:.2rem}
+.video-url-input{position:absolute;bottom:0;left:0;right:0;z-index:5;background:rgba(0,0,0,.85);border:none;border-top:1px solid rgba(255,255,255,.1);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.7rem 1rem;width:100%;opacity:0;transition:opacity .3s;pointer-events:none}
+.video-slot.editing .video-url-input{opacity:1;pointer-events:all}
+.video-slot iframe{position:absolute;inset:0;width:100%;height:100%;border:none;z-index:3}
+
+/* AVIS */
+#avisclients{background:var(--dark);min-height:100vh;color:var(--white)}
+.avis-hero{
+  min-height:40vh;position:relative;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:9rem 2rem 4rem;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 60%,#3a0a18 0%,#1a0e0a 60%,#0d0608 100%);
+}
+.avis-hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5rem);font-weight:900;background:linear-gradient(135deg,var(--white) 0%,var(--gold-light) 50%,var(--rose-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.8rem;animation:fadeUp .8s ease .15s both}
+.avis-hero p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:rgba(245,237,224,.6);animation:fadeUp .8s ease .3s both}
+.avis-section{padding:3rem 2rem 5rem;max-width:1200px;margin:0 auto}
+.avis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+.avis-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:1.8rem;transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;overflow:hidden;animation:fadeUp .6s ease both}
+.avis-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3);border-color:rgba(201,151,58,.3)}
+.avis-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.avis-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.avis-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--white);font-weight:700}
+.avis-stars{font-size:.9rem;letter-spacing:.05rem;color:var(--gold)}
+.avis-text{font-size:.85rem;line-height:1.7;color:rgba(245,237,224,.7);font-style:italic;margin-bottom:1rem}
+.avis-type-badge{background:rgba(176,48,64,.3);border:1px solid rgba(176,48,64,.5);color:var(--rose-light);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border-radius:10px}
+.avis-event{font-size:.7rem;color:rgba(245,237,224,.3)}
+.avis-verified{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);opacity:.6;margin-top:.5rem}
+
+/* CONTACT */
+#contact{background:var(--beige);min-height:100vh;padding:7rem 2rem 5rem}
+.contact-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.contact-info{position:sticky;top:7rem}
+.contact-form-wrap{background:var(--white);border-radius:24px;padding:3rem;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.form-group{margin-bottom:1.5rem}
+.form-group label{display:block;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mid);margin-bottom:.5rem;font-weight:500}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:.8rem 1rem;border:1.5px solid var(--beige-dark);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text-dark);background:var(--beige);transition:border-color .3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--rouge)}
+.form-group textarea{resize:vertical;min-height:120px}
+.contact-detail{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.contact-icon{width:44px;height:44px;background:var(--rouge);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.contact-detail-text strong{display:block;font-size:.85rem;color:var(--text-dark);margin-bottom:.2rem}
+.contact-detail-text span{font-size:.82rem;color:var(--text-mid)}
+
+/* DEVIS */
+#creermondevi,#devis{background:var(--dark);min-height:100vh;color:var(--white);padding:7rem 2rem 5rem}
+.devis-header{text-align:center;padding-bottom:3rem}
+.devis-container{display:grid;grid-template-columns:1fr 360px;gap:2rem;max-width:1200px;margin:0 auto}
+.steps-list{display:flex;flex-direction:column;gap:1.2rem}
+.step-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;overflow:hidden;transition:border-color .3s}
+.step-card.active{border-color:rgba(201,151,58,.4)}
+.step-header{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.5rem;cursor:pointer;user-select:none}
+.step-num{width:32px;height:32px;background:var(--rouge);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:var(--white);flex-shrink:0}
+.step-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--white);flex:1}
+.step-chevron{color:rgba(245,237,224,.4);transition:transform .3s;font-size:.8rem}
+.step-card.active .step-chevron{transform:rotate(90deg);color:var(--gold)}
+.step-body{display:none;padding:0 1.5rem 1.5rem}
+.step-card.active .step-body{display:block}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-grid .full{grid-column:1/-1}
+.form-group input,.form-group select{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:var(--white)}
+.form-group input::placeholder{color:rgba(245,237,224,.3)}
+.form-group label{color:rgba(245,237,224,.6)}
+.form-group input:focus,.form-group select:focus{border-color:var(--gold);background:rgba(255,255,255,.12)}
+.form-group select option{background:#2d1a12;color:var(--white)}
+.moment-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem}
+.moment-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(245,237,224,.7);padding:.7rem .5rem;border-radius:12px;cursor:pointer;text-align:center;font-size:.78rem;transition:all .3s;font-family:'DM Sans',sans-serif}
+.moment-btn:hover,.moment-btn.sel{background:var(--rouge);border-color:var(--rouge);color:var(--white)}
+.moment-btn .em{display:block;font-size:1.3rem;margin-bottom:.2rem}
+
+/* COCKTAIL MESURE */
+.cocktail-mesure-option{background:rgba(201,151,58,.1);border:1.5px solid rgba(201,151,58,.4);border-radius:16px;padding:1rem;margin-bottom:1rem}
+.cocktail-mesure-label{display:flex;align-items:center;gap:.8rem;cursor:pointer}
+.cocktail-mesure-label input[type="radio"]{accent-color:var(--gold);width:16px;height:16px}
+.cocktail-mesure-label span{font-size:.9rem;color:var(--white);font-weight:500}
+.mesure-tooltip{display:none;font-size:.78rem;color:rgba(245,237,224,.6);line-height:1.5;margin-top:.6rem;padding:.6rem .8rem;background:rgba(255,255,255,.05);border-radius:8px;border-left:2px solid var(--gold)}
+.cocktail-mesure-option.selected .mesure-tooltip{display:block}
+.d-cocktail-grid{display:flex;flex-direction:column;gap:.5rem}
+.d-cocktail-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;transition:border-color .3s}
+.d-cocktail-item.selected{border-color:rgba(176,48,64,.5);background:rgba(176,48,64,.1)}
+.d-cocktail-item.disabled{opacity:.4;pointer-events:none}
+.d-cocktail-header{display:flex;align-items:center;gap:.8rem;padding:.7rem 1rem;cursor:pointer}
+.d-cocktail-header input[type="checkbox"]{accent-color:var(--rouge);width:16px;height:16px;flex-shrink:0}
+.d-cocktail-name{font-size:.9rem;color:var(--white)}
+.d-cocktail-sub{font-size:.72rem;color:rgba(245,237,224,.4);margin-left:auto}
+.d-ingr-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(245,237,224,.6);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-left:.5rem;flex-shrink:0;transition:all .2s;padding:0}
+.d-ingr-btn:hover{background:rgba(201,151,58,.2);border-color:var(--gold);color:var(--gold)}
+.d-ingr-list{display:none;flex-wrap:wrap;gap:.35rem;padding:.6rem 1rem .8rem 2.8rem;border-top:1px solid rgba(255,255,255,.06)}
+.d-ingr-list.open{display:flex}
+.d-ingr-tag{background:rgba(201,151,58,.12);border:1px solid rgba(201,151,58,.25);color:var(--gold-light);font-size:.68rem;padding:.2rem .55rem;border-radius:10px}
+.alc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem}
+.alc-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(245,237,224,.7);padding:.6rem .4rem;border-radius:12px;cursor:pointer;text-align:center;font-size:.72rem;transition:all .3s;font-family:'DM Sans',sans-serif}
+.alc-item:hover,.alc-item.sel{background:var(--rouge);border-color:var(--rouge);color:var(--white)}
+.alc-item .ai{display:block;font-size:1.4rem;margin-bottom:.2rem}
+.alc-item.premium:hover,.alc-item.premium.sel{background:linear-gradient(135deg,var(--gold),#b8851e)}
+.verre-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.verre-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(245,237,224,.7);padding:1rem;border-radius:16px;cursor:pointer;text-align:center;font-size:.82rem;transition:all .3s;font-family:'DM Sans',sans-serif}
+.verre-item:hover,.verre-item.sel{background:var(--rouge);border-color:var(--rouge);color:var(--white)}
+.vi{display:block;font-size:2rem;margin-bottom:.4rem}
+.recap-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:1.8rem;position:sticky;top:7rem}
+.recap-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--white);margin-bottom:1.5rem}
+.recap-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:.82rem;color:rgba(245,237,224,.6)}
+.recap-row .val{color:var(--white);font-weight:500}
+.price-bar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin:1.5rem 0;overflow:hidden}
+.price-bar-fill{height:100%;background:linear-gradient(90deg,var(--rouge),var(--gold));border-radius:2px;transition:width .5s ease;width:0%}
+.recap-total{display:flex;justify-content:space-between;align-items:center;padding:.8rem 0}
+.recap-total .lbl{font-size:1rem;color:var(--white);font-weight:700}
+.recap-total .amount{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold)}
+.recap-note{font-size:.72rem;color:rgba(245,237,224,.4);line-height:1.5;margin-bottom:1.5rem}
+.recap-mdo{display:none;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:.82rem;color:rgba(245,237,224,.6)}
+.recap-mdo .val{color:var(--white);font-weight:500}
+.btn-send{width:100%;background:var(--rouge);color:var(--white);border:none;padding:1rem;border-radius:16px;font-family:'Playfair Display',serif;font-size:1rem;cursor:pointer;transition:all .3s;letter-spacing:.05em}
+.btn-send:hover{background:var(--rouge-dark);transform:translateY(-2px)}
+
+/* COMMON */
+.section-label{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--rose-dark);margin-bottom:.8rem;display:block}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;line-height:1.15;color:var(--dark)}
+.section-title em{font-style:italic;color:var(--rouge)}
+.section-title.white{color:var(--white)}
+.btn-primary{display:inline-block;text-decoration:none;background:var(--rouge);color:var(--white);padding:.9rem 2.2rem;border-radius:40px;font-size:.9rem;font-weight:500;letter-spacing:.05em;transition:all .3s;border:none;cursor:pointer;box-shadow:0 8px 25px rgba(176,48,64,.35)}
+.btn-primary:hover{background:var(--rouge-dark);transform:translateY(-2px)}
+.btn-secondary{display:inline-block;text-decoration:none;background:transparent;color:var(--text-dark);padding:.9rem 2.2rem;border-radius:40px;font-size:.9rem;font-weight:500;letter-spacing:.05em;border:1.5px solid var(--beige-deep);transition:all .3s;cursor:pointer}
+.btn-secondary:hover{border-color:var(--rouge);color:var(--rouge);transform:translateY(-2px)}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* FOOTER */
+footer{background:var(--dark-mid);color:rgba(245,237,224,.5);text-align:center;padding:2.5rem;font-size:.8rem}
+.footer-slogan{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;margin-bottom:.4rem;color:rgba(245,237,224,.6)}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.show{display:flex}
+.modal-cocktail{background:var(--white);border-radius:24px;overflow:hidden;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;position:relative;display:grid;grid-template-columns:280px 1fr}
+.modal-close-btn{position:absolute;top:1rem;right:1rem;z-index:10;background:rgba(0,0,0,.3);border:none;color:var(--white);width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;transition:background .2s}
+.modal-close-btn:hover{background:var(--rouge)}
+.modal-visual{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:300px}
+.modal-emoji{font-size:7rem;position:relative;z-index:2;animation:gentleSway 4s ease-in-out infinite}
+.modal-body{padding:2rem}
+.modal-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--dark);margin-bottom:.3rem}
+.modal-sub{font-size:.78rem;color:var(--rouge);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.2rem}
+.modal-section-title{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-mid);opacity:.5;margin:.8rem 0 .5rem}
+.modal-ingr-grid{display:flex;flex-wrap:wrap;gap:.35rem}
+.modal-ingr-tag{background:var(--beige);color:var(--text-mid);font-size:.78rem;padding:.25rem .7rem;border-radius:12px}
+.modal-desc{font-size:.88rem;color:var(--text-mid);line-height:1.75}
+.modal-flavors{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem}
+.modal-flavor-chip{background:rgba(232,160,168,.2);color:var(--rose-dark);font-size:.72rem;padding:.2rem .6rem;border-radius:10px}
+.modal-cta{width:100%;background:var(--rouge);color:var(--white);border:none;padding:.9rem;border-radius:20px;font-size:.9rem;cursor:pointer;transition:all .3s;font-family:'Playfair Display',serif}
+.modal-cta:hover{background:var(--rouge-dark)}
+.confirm-modal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center}
+.confirm-modal.show{display:flex}
+.confirm-box{background:var(--dark);border:1px solid rgba(201,151,58,.3);border-radius:24px;padding:3rem;text-align:center;max-width:420px;width:90%}
+.confirm-box .ci{font-size:3rem;margin-bottom:1rem}
+.confirm-box h2{font-family:'Playfair Display',serif;color:var(--white);margin-bottom:1rem}
+.confirm-box p{font-size:.85rem;color:rgba(245,237,224,.7);line-height:1.6}
+.confirm-close{margin-top:2rem;background:var(--rouge);color:var(--white);border:none;padding:.8rem 2rem;border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .3s}
+.confirm-close:hover{background:var(--rouge-dark)}
+.lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center}
+.lightbox.show{display:flex}
+.lb-content{max-width:800px;width:100%;padding:2rem;text-align:center;position:relative}
+.lb-emoji{font-size:10rem;filter:drop-shadow(0 20px 50px rgba(176,48,64,.4));animation:gentleSway 4s ease-in-out infinite}
+.lb-label{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--white);margin-top:1rem;font-style:italic}
+.lb-close{position:absolute;top:-1rem;right:0;background:rgba(255,255,255,.1);border:none;color:var(--white);width:40px;height:40px;border-radius:50%;font-size:1.2rem;cursor:pointer}
+.lb-close:hover{background:var(--rouge)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{gap:0}
+  .nav-btn{padding:.4rem .6rem;font-size:.72rem}
+  .hero-content{padding:8rem 1.5rem 4rem}
+  .apropos-inner{grid-template-columns:1fr;padding:3rem 2rem}
+  .contact-inner{grid-template-columns:1fr}
+  .devis-container{grid-template-columns:1fr}
+  .modal-cocktail{grid-template-columns:1fr}
+  .modal-visual{min-height:200px}
+  .alc-grid{grid-template-columns:repeat(4,1fr)}
+  .form-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .hero-content{padding:8rem 1.5rem 3rem}
+  .nav-brand-name{display:none}
+  .alc-grid{grid-template-columns:repeat(2,1fr)}
+  .moment-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="nav-logo-wrap" href="#accueil" onclick="smoothTo('accueil')">
+    <img src="Logo.png" class="nav-logo-img" alt="Cocksinels" style="height:54px;width:auto">
+  </a>
+  <ul class="nav-links">
+    <li><button class="nav-btn active" id="btn-accueil" onclick="smoothTo('accueil')">Accueil</button></li>
+    <li><button class="nav-btn" id="btn-prestations" onclick="smoothTo('prestations')">Prestations</button></li>
+    <li><button class="nav-btn" id="btn-cocktails" onclick="smoothTo('cocktails')">Cocktails</button></li>
+    <li><button class="nav-btn" id="btn-realisations" onclick="smoothTo('realisations')">Réalisations</button></li>
+    <li><button class="nav-btn" id="btn-avisclients" onclick="smoothTo('avisclients')">Avis clients</button></li>
+    <li><button class="nav-btn" id="btn-contact" onclick="smoothTo('contact')">Contact</button></li>
+    <li><button class="nav-btn nav-cta" onclick="smoothTo('devis')">Créer mon devis</button></li>
+  </ul>
+</nav>
+
+<!-- ACCUEIL -->
+<section id="accueil">
+  <!-- VIDEO FOND ACCUEIL : remplace src="videos/accueil.mp4" par ton fichier -->
+  <video id="bgVideoAccueil" class="bg-video" src="videos/accueil.mp4" autoplay muted loop playsinline></video>
+  <!-- Fruits flottants -->
+  <div class="hero-fruit fruit-1">🍋</div>
+  <div class="hero-fruit fruit-2">🍍</div>
+  <div class="hero-fruit fruit-3">🍑</div>
+  <div class="hero-fruit fruit-4">🍓</div>
+  <div class="hero-fruit fruit-5">🫐</div>
+  <div class="hero-fruit fruit-6">🌿</div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Bar à cocktails événementiel</div>
+    <h1 class="hero-title"><strong>Cock</strong><em>sinels</em></h1>
+    <p class="hero-slogan">
+      <span class="hero-slogan-herb">🌿</span>
+      "Parce que Cocksinel fait pousser des ailes"
+    </p>
+    <p class="hero-desc">Un bar à cocktails haut de gamme qui s'installe à vos côtés pour vos événements les plus précieux. Mariage, anniversaire, soirée privée — nous créons des moments inoubliables, un verre à la fois.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="smoothTo('devis')">🍸 Créer mon devis</button>
+      <button class="btn-secondary" onclick="smoothTo('cocktails')">En savoir plus</button>
+    </div>
+  </div>
+  <div class="scroll-band" style="position:absolute;bottom:0;left:0;right:0">
+    <div class="band-track">
+      <span>Mariages</span><span class="sep">✦</span>
+      <span>Anniversaires</span><span class="sep">✦</span>
+      <span>Soirées privées</span><span class="sep">✦</span>
+      <span>Corporate</span><span class="sep">✦</span>
+      <span>Cocktails signature</span><span class="sep">✦</span>
+      <span>Mariages</span><span class="sep">✦</span>
+      <span>Anniversaires</span><span class="sep">✦</span>
+      <span>Soirées privées</span><span class="sep">✦</span>
+      <span>Corporate</span><span class="sep">✦</span>
+      <span>Cocktails signature</span><span class="sep">✦</span>
+    </div>
+  </div>
+</section>
+
+<!-- NOTRE HISTOIRE -->
+<section id="notrehistoire" style="min-height:auto">
+  <div class="apropos-inner reveal">
+    <div class="apropos-text">
+      <span class="section-label">Notre histoire</span>
+      <h2 class="section-title">L'art de créer des<br><em>moments uniques</em></h2>
+      <p>Cocksinels est né d'une passion pour l'art du cocktail et du service événementiel. Notre équipe de mixologues expérimentés apporte créativité, professionnalisme et convivialité à chacune de vos célébrations.</p>
+      <p>Nous créons des expériences sensorielles inoubliables, en adaptant chaque prestation à votre vision et à votre événement. Du cocktail signature qui reflète votre personnalité à la sélection soigneuse d'ingrédients frais et de qualité.</p>
+      <div class="apropos-icons">
+        <div class="icon-pill">🏆 5 ans d'expérience</div>
+        <div class="icon-pill">🍹 +50 créations</div>
+        <div class="icon-pill">💍 +200 événements</div>
+        <div class="icon-pill">⭐ 5/5 avis clients</div>
+      </div>
+    </div>
+    <div>
+      <div class="video-placeholder" id="videoContainer">
+        <div class="video-placeholder-text">
+          <span style="font-size:3rem;display:block;margin-bottom:.8rem">🎬</span>
+          Espace vidéo<br>
+          <span style="font-size:.8rem;opacity:.6">Ajoutez votre lien YouTube ici</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESTATIONS -->
+<section id="prestations">
+  <div class="events-header reveal">
+    <span class="section-label">Ce que nous proposons</span>
+    <h2 class="section-title">Nos <em>prestations</em></h2>
+    <p style="color:var(--text-mid);margin-top:1rem;font-size:.95rem">Un service complet pour chaque occasion, adapté à vos besoins</p>
+  </div>
+  <div class="events-grid reveal">
+    <div class="event-card">
+      <div class="event-icon">💍</div>
+      <h3>Mariages</h3>
+      <p>Cocktails raffinés pour votre vin d'honneur et soirée dansante. Une ambiance magique, des saveurs inoubliables.</p>
+    </div>
+    <div class="event-card">
+      <div class="event-icon">🎂</div>
+      <h3>Anniversaires</h3>
+      <p>Cocktails personnalisés aux couleurs de votre fête. Du goûter enfants aux soirées adultes les plus sophistiquées.</p>
+    </div>
+    <div class="event-card">
+      <div class="event-icon">🏢</div>
+      <h3>Corporate</h3>
+      <p>Galas, séminaires, lancements produit. Valorisez votre image avec des créations cocktails à l'effigie de votre marque.</p>
+    </div>
+    <div class="event-card">
+      <div class="event-icon">🎊</div>
+      <h3>Soirées privées</h3>
+      <p>Pool parties, soirées VIP, après-midi entre amis. Chaque moment mérite une boisson d'exception.</p>
+    </div>
+    <div class="event-card">
+      <div class="event-icon">🎓</div>
+      <h3>Remises de diplôme</h3>
+      <p>Célébrez ce passage important avec style. Cocktails festifs pour vous et vos proches.</p>
+    </div>
+  </div>
+  <div class="cta-band" style="margin-top:4rem">
+    <h2>Prêt à créer votre événement ?</h2>
+    <p>Obtenez votre devis personnalisé en quelques minutes</p>
+    <button class="btn-primary" onclick="smoothTo('devis')" style="background:var(--white);color:var(--rouge)">Créer mon devis gratuit</button>
+  </div>
+</section>
+
+<!-- COCKTAILS -->
+<section id="cocktails" style="min-height:auto;padding-bottom:0;position:relative;overflow:hidden">
+  <!-- VIDEO FOND COCKTAILS : remplace src="videos/cocktails.mp4" par ton fichier -->
+  <video id="bgVideoCocktails" class="bg-video" src="videos/cocktails.mp4" autoplay muted loop playsinline></video>
+  <div class="bg-video-overlay"></div>
+  <div class="cocktails-hero-inner reveal">
+    <div class="hero-eyebrow">Notre carte</div>
+    <h2 class="section-title" style="text-align:center">Nos <em>Cocktails</em></h2>
+    <p style="color:var(--text-mid);margin-top:.8rem;margin-bottom:2rem;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem">Des créations inspirées des meilleures saveurs du monde</p>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterCards('all',this)">✦ Tous</button>
+      <button class="filter-btn" onclick="filterCards('fruity',this)">🍓 Fruités</button>
+      <button class="filter-btn" onclick="filterCards('tropical',this)">🌺 Tropicaux</button>
+      <button class="filter-btn" onclick="filterCards('fresh',this)">🌿 Frais</button>
+      <button class="filter-btn" onclick="filterCards('creamy',this)">🥥 Crémeux</button>
+      <button class="filter-btn" onclick="filterCards('virgin',this)">💚 Sans alcool</button>
+    </div>
+  </div>
+  <div class="cocktails-section">
+    <div class="cocktails-grid" id="cocktailsGrid"></div>
+  </div>
+</section>
+
+<!-- RÉALISATIONS -->
+<section id="realisations">
+  <div class="real-hero">
+    <div class="rh-ring rh-ring-1"></div>
+    <div class="rh-ring rh-ring-2"></div>
+    <div style="position:relative;z-index:2">
+      <div class="hero-eyebrow" style="color:var(--gold-light)">Nos événements</div>
+      <h1>Nos <em style="-webkit-text-fill-color:transparent;background:linear-gradient(135deg,var(--rose-light),var(--rouge));-webkit-background-clip:text;background-clip:text">Réalisations</em></h1>
+      <p>Chaque événement est une histoire unique — revivez nos plus beaux moments</p>
+    </div>
+  </div>
+  <!-- Section vidéos -->
+  <div class="videos-section">
+    <h2 class="videos-title">Nos moments en vidéo</h2>
+    <p class="videos-subtitle"><em>Découvrez l'ambiance Cocksinels en action</em></p>
+    <div class="videos-grid">
+
+      <!-- Slot vidéo 1 -->
+      <div class="video-slot" onclick="openVideoSlot(this, 1)">
+        <span class="video-platform-badge">Reels</span>
+        <div class="video-slot-bg" style="background:radial-gradient(ellipse at 40% 60%, #5a1a2a 0%, #1a0a12 100%)"></div>
+        <div class="video-play-btn">
+          <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <div class="video-slot-overlay">
+          <span class="video-slot-label">Ajouter une vidéo</span>
+          <span class="video-slot-hint">Cliquez pour configurer</span>
+        </div>
+        <input class="video-url-input" type="text" placeholder="Lien YouTube ou vidéo..." onclick="event.stopPropagation()" onchange="setVideoSlot(this,1)">
+      </div>
+
+      <!-- Slot vidéo 2 -->
+      <div class="video-slot" onclick="openVideoSlot(this, 2)">
+        <span class="video-platform-badge">TikTok</span>
+        <div class="video-slot-bg" style="background:radial-gradient(ellipse at 50% 55%, #1a1a3a 0%, #0a0a1a 100%)"></div>
+        <div class="video-play-btn">
+          <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <div class="video-slot-overlay">
+          <span class="video-slot-label">Ajouter une vidéo</span>
+          <span class="video-slot-hint">Cliquez pour configurer</span>
+        </div>
+        <input class="video-url-input" type="text" placeholder="Lien YouTube ou vidéo..." onclick="event.stopPropagation()" onchange="setVideoSlot(this,2)">
+      </div>
+
+      <!-- Slot vidéo 3 -->
+      <div class="video-slot" onclick="openVideoSlot(this, 3)">
+        <span class="video-platform-badge">Reels</span>
+        <div class="video-slot-bg" style="background:radial-gradient(ellipse at 60% 50%, #0a2a2a 0%, #060f10 100%)"></div>
+        <div class="video-play-btn">
+          <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <div class="video-slot-overlay">
+          <span class="video-slot-label">Ajouter une vidéo</span>
+          <span class="video-slot-hint">Cliquez pour configurer</span>
+        </div>
+        <input class="video-url-input" type="text" placeholder="Lien YouTube ou vidéo..." onclick="event.stopPropagation()" onchange="setVideoSlot(this,3)">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- AVIS CLIENTS -->
+<section id="avisclients">
+  <div class="avis-hero">
+    <div style="position:relative;z-index:2">
+      <h1>Avis <em style="-webkit-text-fill-color:transparent;background:linear-gradient(135deg,var(--white),var(--gold-light));-webkit-background-clip:text;background-clip:text">Clients</em></h1>
+      <p>Ce que disent nos clients de leur expérience Cocksinels</p>
+    </div>
+  </div>
+  <div class="avis-section">
+    <div class="avis-grid" id="avisGrid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="min-height:auto">
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <span class="section-label">Parlons ensemble</span>
+      <h2 class="section-title">Contactez<br><em>notre équipe</em></h2>
+      <p style="color:var(--text-mid);margin:1.5rem 0 2.5rem;line-height:1.75">Une question sur nos prestations ? Un événement à organiser ? Nous sommes là pour vous accompagner de A à Z.</p>
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div class="contact-detail-text">
+          <strong>Zone d'intervention</strong>
+          <span>Île-de-France & environs</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📱</div>
+        <div class="contact-detail-text">
+          <strong>Téléphone</strong>
+          <span>Disponible sur devis</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📧</div>
+        <div class="contact-detail-text">
+          <strong>Email</strong>
+          <span>contact@cocksinels.fr</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form-wrap reveal">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--dark);margin-bottom:1.5rem">Envoyez-nous un message</h3>
+      <div class="form-group"><label>Prénom & Nom</label><input type="text" placeholder="Marie Dupont"></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="marie@exemple.fr"></div>
+      <div class="form-group"><label>Sujet</label><select><option>Demande d'information</option><option>Devis événement</option><option>Partenariat</option><option>Autre</option></select></div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Décrivez votre projet..."></textarea></div>
+      <button class="btn-primary" style="width:100%" onclick="alert('Message envoyé ! Nous vous répondrons dans les 24h.')">Envoyer le message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- DEVIS -->
+<section id="devis">
+  <div class="devis-header">
+    <span class="section-label" style="color:var(--gold)">Devis personnalisé</span>
+    <h2 class="section-title white">Créez votre <em>expérience</em></h2>
+    <p style="color:rgba(245,237,224,.6)">Configurez votre événement étape par étape et obtenez votre devis instantanément.</p>
+  </div>
+  <div class="devis-container">
+    <div class="steps-list">
+      <div class="step-card active" id="step1">
+        <div class="step-header" onclick="toggleStep('step1')"><div class="step-num">1</div><div class="step-title">Vos coordonnées</div><span class="step-chevron">▶</span></div>
+        <div class="step-body">
+          <div class="form-grid">
+            <div class="form-group"><label>Prénom</label><input type="text" id="prenom" placeholder="Marie"></div>
+            <div class="form-group"><label>Nom</label><input type="text" id="nom" placeholder="Dupont"></div>
+            <div class="form-group"><label>Téléphone</label><input type="tel" id="tel" placeholder="+33 6 00 00 00 00"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="marie@exemple.fr"></div>
+          </div>
+        </div>
+      </div>
+      <div class="step-card" id="step2">
+        <div class="step-header" onclick="toggleStep('step2')"><div class="step-num">2</div><div class="step-title">Votre événement</div><span class="step-chevron">▶</span></div>
+        <div class="step-body">
+          <div class="form-grid">
+            <div class="form-group"><label>Nombre d'invités</label><input type="number" id="invites" placeholder="50" min="1" oninput="updateDevis()"></div>
+            <div class="form-group"><label>Type d'événement</label>
+              <select id="typeEvent" onchange="updateDevis()"><option value="">Choisir...</option><option>Mariage</option><option>Anniversaire</option><option>Soirée privée</option><option>Entreprise / Corporate</option><option>Remise de diplôme</option><option>Autre</option></select>
+            </div>
+            <div class="form-group full"><label>Date souhaitée</label><input type="date" id="dateEvent" onchange="updateDevis()"></div>
+            <div class="form-group full"><label>Moment de la journée</label>
+              <div class="moment-grid">
+                <div class="moment-btn" onclick="selectMoment(this,'Matin')"><span class="em">🌅</span>Matin</div>
+                <div class="moment-btn" onclick="selectMoment(this,'Midi')"><span class="em">☀️</span>Midi</div>
+                <div class="moment-btn" onclick="selectMoment(this,'Soir')"><span class="em">🌙</span>Soir</div>
+                <div class="moment-btn" onclick="selectMoment(this,'Autre')"><span class="em">⏰</span>Autre</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-card" id="step3">
+        <div class="step-header" onclick="toggleStep('step3')"><div class="step-num">3</div><div class="step-title">Choisissez vos cocktails</div><span class="step-chevron">▶</span></div>
+        <div class="step-body">
+          <!-- Cocktail sur mesure -->
+          <div class="cocktail-mesure-option" id="mesureOption" onclick="toggleMesure()">
+            <label class="cocktail-mesure-label" style="pointer-events:none">
+              <span id="mesureCheckIcon" style="width:18px;height:18px;border:2px solid var(--gold);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;background:transparent;font-size:.75rem"></span>
+              <span>✨ Cocktail sur mesure créé exclusivement pour votre événement</span>
+            </label>
+            <div class="mesure-tooltip">Les cocktails seront des cocktails de création pour découvrir des saveurs uniques, imaginés spécialement pour vous et votre événement. Une expérience exclusive et personnalisée.</div>
+          </div>
+          <div style="text-align:center;color:rgba(245,237,224,.4);font-size:.8rem;margin:.5rem 0">— ou choisissez dans notre carte —</div>
+          <div class="d-cocktail-grid" id="dCocktailGrid"></div>
+        </div>
+      </div>
+      <div class="step-card" id="step4">
+        <div class="step-header" onclick="toggleStep('step4')"><div class="step-num">4</div><div class="step-title">Sélection des alcools</div><span class="step-chevron">▶</span></div>
+        <div class="step-body">
+          <p style="font-size:.8rem;color:rgba(245,237,224,.5);margin-bottom:1rem">Sélectionnez un ou plusieurs alcools.*</p>
+          <div class="alc-grid" id="alcGrid"></div>
+          <p style="font-size:.72rem;color:rgba(245,237,224,.4);margin-top:.8rem;line-height:1.5">* Le prix augmente pour le Hennessy et le Champagne en raison du coût plus élevé de ces alcools.</p>
+        </div>
+      </div>
+      <div class="step-card" id="step5">
+        <div class="step-header" onclick="toggleStep('step5')"><div class="step-num">5</div><div class="step-title">Choix des verres</div><span class="step-chevron">▶</span></div>
+        <div class="step-body">
+          <div class="verre-grid">
+            <div class="verre-item" onclick="selectVerre(this,'Gobelet jetable')"><span class="vi">🥤</span><span>Gobelet jetable</span></div>
+            <div class="verre-item" onclick="selectVerre(this,'Verre à cocktail')"><span class="vi">🍸</span><span>Verre à cocktail</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="recap-card">
+      <div class="recap-title">📋 Votre devis</div>
+      <div class="recap-row"><span>Invités</span><span class="val" id="r-invites">—</span></div>
+      <div class="recap-row"><span>Événement</span><span class="val" id="r-event">—</span></div>
+      <div class="recap-row"><span>Date</span><span class="val" id="r-date">—</span></div>
+      <div class="recap-row"><span>Moment</span><span class="val" id="r-moment">—</span></div>
+      <div class="recap-row"><span>Sous-total invités</span><span class="val" id="r-sous-total">—</span></div>
+      <div class="recap-mdo" id="r-mdo-row"><span>Main d'œuvre</span><span class="val">150 €</span></div>
+      <div class="price-bar"><div class="price-bar-fill" id="priceBar"></div></div>
+      <div class="recap-total"><span class="lbl">Total estimé</span><span class="amount" id="r-total">—</span></div>
+      <p class="recap-note">Les 150 € correspondent aux frais de main d'œuvre et de préparation. Ce devis est indicatif.</p>
+      <button class="btn-send" onclick="sendDevis()">Envoyer ma demande →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-slogan">"Parce que Cocksinel fait pousser des ailes"</p>
+  <p>© 2025 Cocksinels — Bar à cocktails événementiel · Tous droits réservés</p>
+</footer>
+
+<!-- MODAL COCKTAIL -->
+<div class="modal-overlay" id="cocktailModal">
+  <div class="modal-cocktail">
+    <button class="modal-close-btn" onclick="closeModal()">✕</button>
+    <div class="modal-visual" id="modalVisual">
+      <div class="card-bubbles" id="modalBubbles"></div>
+      <span class="modal-emoji" id="modalEmoji"></span>
+    </div>
+    <div class="modal-body">
+      <div id="modalBadgeWrap"></div>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-sub" id="modalSub"></div>
+      <div class="modal-section-title">Ingrédients</div>
+      <div class="modal-ingr-grid" id="modalIngr"></div>
+      <div class="modal-section-title">Notes de dégustation</div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-section-title">Profil aromatique</div>
+      <div class="modal-flavors" id="modalFlavors"></div>
+      <button class="modal-cta" onclick="closeModal();smoothTo('devis')">🍹 Ajouter à mon devis</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-box">
+    <div class="ci">🎉</div>
+    <h2>Demande envoyée !</h2>
+    <p>Merci <strong id="cp-prenom"></strong> ! Votre demande a bien été reçue. Notre équipe vous contactera dans les plus brefs délais.</p>
+    <p style="margin-top:.8rem;font-size:.82rem">📧 Confirmation à : <strong id="cp-email"></strong></p>
+    <button class="confirm-close" onclick="document.getElementById('confirmModal').classList.remove('show')">Parfait, merci !</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+  <div class="lb-content">
+    <button class="lb-close" onclick="event.stopPropagation();document.getElementById('lightbox').classList.remove('show')">✕</button>
+    <div class="lb-emoji" id="lbEmoji"></div>
+    <div class="lb-label" id="lbLabel"></div>
+  </div>
+</div>
+
+<script>
+// ── SMOOTH SCROLL ──
+function smoothTo(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.scrollIntoView({behavior:'smooth'});
+  // Update active nav
+  document.querySelectorAll('.nav-btn:not(.nav-cta)').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('btn-'+id);
+  if(btn)btn.classList.add('active');
+}
+
+// ── NAV STYLE ON SCROLL ──
+const darkSections=['realisations','avisclients','devis'];
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{
+  let current='accueil';
+  document.querySelectorAll('section[id]').forEach(s=>{
+    if(window.scrollY>=s.offsetTop-80)current=s.id;
+  });
+  nav.className=darkSections.includes(current)?'nav-dark':'';
+  document.querySelectorAll('.nav-btn:not(.nav-cta)').forEach(b=>b.classList.remove('active'));
+  const ab=document.getElementById('btn-'+current);
+  if(ab)ab.classList.add('active');
+});
+
+// ── DATA ──
+const cocktailData=[
+  {id:0,name:"Lady Bug World",subtitle:"La signature Cocksinels",emoji:"🍸",category:"fruity",ingredients:["Pomme verte","Litchi"],desc:"Un équilibre délicat entre la fraîcheur acidulée de la pomme verte et la douceur florale du litchi.",flavors:["Fruité","Floral","Équilibré","Délicat"],badge:"Signature",badgeClass:"",bg:"linear-gradient(135deg,#e8c4b0 0%,#f0d8c8 100%)"},
+  {id:1,name:"Yummy Nana",subtitle:"Voyage exotique",emoji:"🌺",category:"tropical",ingredients:["Passion","Pomme rouge","Curaçao"],desc:"Un tourbillon de saveurs exotiques où la passion se mêle au croquant de la pomme rouge.",flavors:["Exotique","Fruité","Vif","Coloré"],badge:"Populaire",badgeClass:"",bg:"linear-gradient(135deg,#f0c4a0 0%,#f5d8b8 100%)"},
+  {id:2,name:"Mojito",subtitle:"Le classique revisité",emoji:"🌿",category:"fresh",ingredients:["Citron","Menthe","Sucre","Sirop de canne","Limonade"],desc:"Le grand classique dans toute sa splendeur. Menthe fraîche, citron pressé, une symphonie de fraîcheur.",flavors:["Frais","Herbacé","Citronné","Pétillant"],badge:"Best-seller",badgeClass:"",bg:"linear-gradient(135deg,#c4e0c8 0%,#d8ecd8 100%)"},
+  {id:3,name:"Virgin Mojito",subtitle:"Sans alcool · Toujours festif",emoji:"💚",category:"virgin",ingredients:["Citron","Menthe","Sucre","Sirop de canne","Limonade"],desc:"Toute la fraîcheur du mojito, sans alcool. Une version inclusive pour tous vos invités.",flavors:["Frais","Doux","Pétillant","Léger"],badge:"Sans alcool",badgeClass:"virgin",bg:"linear-gradient(135deg,#b8dcc0 0%,#cce8d0 100%)"},
+  {id:4,name:"Purple Kiss",subtitle:"La douceur mystérieuse",emoji:"🫐",category:"fruity",ingredients:["Litchi","Orgeat","Myrtilles"],desc:"Un baiser violet aux saveurs enveloppantes de litchi et myrtilles, adouci par l'orgeat.",flavors:["Doux","Floral","Baies","Mystérieux"],badge:"",badgeClass:"",bg:"linear-gradient(135deg,#d4b8e0 0%,#e4cce8 100%)"},
+  {id:5,name:"Old Fashion",subtitle:"Le twist fruitier",emoji:"🍑",category:"fruity",ingredients:["Pêche","Sirop de canne","Sirop passion"],desc:"Une réinterprétation moderne. La pêche veloutée rencontre la passion intense.",flavors:["Fruité","Rond","Sophistiqué","Velouté"],badge:"",badgeClass:"",bg:"linear-gradient(135deg,#f0c8a0 0%,#f5d8b0 100%)"},
+  {id:6,name:"Piña Colada",subtitle:"Évasion tropicale",emoji:"🥥",category:"creamy",ingredients:["Coco","Ananas","Cannelle","Vanille"],desc:"La richesse du coco, la vivacité de l'ananas, le réconfort de la cannelle et la douceur de la vanille.",flavors:["Crémeux","Tropical","Doux","Exotique"],badge:"Tropical",badgeClass:"",bg:"linear-gradient(135deg,#f0e4c0 0%,#f5ecd0 100%)"},
+  {id:7,name:"Moscow Mules",subtitle:"Le pétillant épicé",emoji:"🫚",category:"fresh",ingredients:["Ginger Beer revisité","Gingembre","Sirop de canne","Citron vert"],desc:"Un cocktail qui réveille les sens avec le piquant du gingembre et la vivacité du citron vert.",flavors:["Épicé","Pétillant","Frais","Vif"],badge:"",badgeClass:"",bg:"linear-gradient(135deg,#c8d8e8 0%,#d8e4f0 100%)"},
+];
+const alcoholsData=[
+  {name:"Hennessy",icon:"🥃",premium:true},{name:"Champagne",icon:"🍾",premium:true},
+  {name:"Rhum blanc",icon:"🍶",premium:false},{name:"Rhum vieux",icon:"🥃",premium:false},
+  {name:"Vodka",icon:"🍸",premium:false},{name:"Liqueur",icon:"🍹",premium:false},
+  {name:"Whisky",icon:"🥃",premium:false},{name:"Gin",icon:"🌿",premium:false},
+];
+let selectedMoment="",selectedVerre="",cocktailMode="normal";
+let selectedCocktails=new Set(),selectedAlcohols=new Set();
+
+// ── COCKTAIL CARDS ──
+function buildCards(filter){
+  const grid=document.getElementById('cocktailsGrid');
+  grid.innerHTML='';
+  const list=filter==='all'?cocktailData:cocktailData.filter(c=>c.category===filter);
+  list.forEach((c,idx)=>{
+    const card=document.createElement('div');
+    card.className='cocktail-card';
+    card.style.animationDelay=idx*0.08+'s';
+    let bubbles='';
+    for(let b=0;b<5;b++){const sz=3+Math.random()*7;bubbles+=`<div class="bubble" style="--size:${sz.toFixed(0)}px;--left:${15+Math.random()*70}%;--dur:${2+Math.random()*3}s;--delay:${Math.random()*3}s"></div>`;}
+    const badge=c.badge?`<div class="card-badge ${c.badgeClass}">${c.badge}</div>`:'';
+    card.innerHTML=`
+      <div class="card-visual">
+        <div class="card-bg" style="background:${c.bg}"></div>
+        <div class="card-bubbles">${bubbles}</div>
+        ${badge}
+        <span class="card-emoji">${c.emoji}</span>
+      </div>
+      <div class="card-content">
+        <div class="card-name">${c.name}</div>
+        <div class="card-subtitle">${c.subtitle}</div>
+        <div class="card-ingr-label">Ingrédients</div>
+        <div class="card-ingr-list">${c.ingredients.map(i=>`<span class="ingr-tag">${i}</span>`).join('')}</div>
+        <div class="card-divider"></div>
+        <div class="card-flavors">${c.flavors.map(f=>`<span class="flavor-dot">${f}</span>`).join('')}</div>
+        <button class="card-cta" onclick="event.stopPropagation();openModal(${c.id})">Découvrir ce cocktail →</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+function filterCards(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildCards(cat);
+}
+buildCards('all');
+
+// ── MODAL ──
+function openModal(id){
+  const c=cocktailData[id];
+  document.getElementById('modalEmoji').textContent=c.emoji;
+  document.getElementById('modalVisual').style.background=c.bg;
+  document.getElementById('modalName').textContent=c.name;
+  document.getElementById('modalSub').textContent=c.subtitle;
+  const bw=document.getElementById('modalBadgeWrap');
+  bw.innerHTML=c.badge?`<div style="display:inline-block;background:${c.badgeClass==='virgin'?'#27ae60':'var(--gold)'};color:${c.badgeClass==='virgin'?'#fff':'var(--dark)'};font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.28rem .65rem;border-radius:20px;margin-bottom:.7rem">${c.badge}</div>`:'';
+  document.getElementById('modalIngr').innerHTML=c.ingredients.map(i=>`<div class="modal-ingr-tag">${i}</div>`).join('');
+  document.getElementById('modalDesc').textContent=c.desc;
+  document.getElementById('modalFlavors').innerHTML=c.flavors.map(f=>`<span class="modal-flavor-chip">${f}</span>`).join('');
+  const mb=document.getElementById('modalBubbles');mb.innerHTML='';
+  for(let b=0;b<6;b++){const el=document.createElement('div');el.className='bubble';const sz=4+Math.random()*8;el.style.cssText=`--size:${sz.toFixed(0)}px;--left:${15+Math.random()*70}%;--dur:${2+Math.random()*3}s;--delay:${Math.random()*2}s`;mb.appendChild(el);}
+  document.getElementById('cocktailModal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('cocktailModal').classList.remove('show');document.body.style.overflow='';}
+document.getElementById('cocktailModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// ── DEVIS STEP ──
+function toggleStep(id){
+  document.querySelectorAll('.step-card').forEach(s=>{
+    if(s.id===id)s.classList.toggle('active');
+    else s.classList.remove('active');
+  });
+}
+
+// ── COCKTAIL MODE ──
+function toggleMesure(){
+  const mesure=document.getElementById('mesureOption');
+  const icon=document.getElementById('mesureCheckIcon');
+  if(cocktailMode==='mesure'){
+    // Déselectionner
+    cocktailMode='';
+    mesure.classList.remove('selected');
+    icon.textContent='';
+    icon.style.background='transparent';
+    document.querySelectorAll('.d-cocktail-item').forEach(i=>i.classList.remove('disabled'));
+  } else {
+    // Sélectionner
+    cocktailMode='mesure';
+    mesure.classList.add('selected');
+    icon.textContent='✓';
+    icon.style.background='var(--gold)';
+    icon.style.color='#1a0e0a';
+    document.querySelectorAll('.d-cocktail-item').forEach(i=>i.classList.add('disabled'));
+    selectedCocktails.clear();
+    document.querySelectorAll('.d-cocktail-item input[type="checkbox"]').forEach(c=>c.checked=false);
+    document.querySelectorAll('.d-cocktail-item').forEach(i=>i.classList.remove('selected'));
+  }
+  updateDevis();
+}
+function setCocktailMode(mode){toggleMesure();}
+
+// ── DEVIS DATA ──
+function buildDevisCocktails(){
+  const grid=document.getElementById('dCocktailGrid');
+  grid.innerHTML='';
+  cocktailData.forEach((c,i)=>{
+    const el=document.createElement('div');el.className='d-cocktail-item';
+    const ingrs = c.ingredients ? c.ingredients.join(', ') : (c.ingr ? c.ingr.map(x=>x).join(', ') : '');
+    el.innerHTML=`
+      <div class="d-cocktail-header">
+        <input type="checkbox" id="dc${i}" onchange="toggleCocktail(${i},this)">
+        <span style="margin-right:.4rem">${c.emoji}</span>
+        <span class="d-cocktail-name">${c.name}</span>
+        <span class="d-cocktail-sub">${c.subtitle}</span>
+        ${ingrs ? `<button class="d-ingr-btn" onclick="toggleIngr(event,${i})" title="Voir les ingrédients">👁</button>` : ''}
+      </div>
+      ${ingrs ? `<div class="d-ingr-list" id="dingr${i}">${ingrs.split(', ').map(x=>`<span class="d-ingr-tag">${x}</span>`).join('')}</div>` : ''}
+    `;
+    grid.appendChild(el);
+  });
+}
+function toggleCocktail(i,cb){
+  if(cocktailMode==='mesure'){cb.checked=false;return;}
+  if(cb.checked){selectedCocktails.add(i);cb.closest('.d-cocktail-item').classList.add('selected');}
+  else{selectedCocktails.delete(i);cb.closest('.d-cocktail-item').classList.remove('selected');}
+  updateDevis();
+}
+function toggleIngr(e, i){
+  e.stopPropagation();
+  const el=document.getElementById('dingr'+i);
+  if(el) el.classList.toggle('open');
+}
+buildDevisCocktails();
+
+function buildAlcGrid(){
+  const grid=document.getElementById('alcGrid');
+  grid.innerHTML='';
+  alcoholsData.forEach((a,i)=>{
+    const el=document.createElement('div');
+    el.className='alc-item'+(a.premium?' premium':'');
+    el.setAttribute('onclick',`toggleAlc(${i},this)`);
+    el.innerHTML=`<span class="ai">${a.icon}</span>${a.name}${a.premium?'<br><span style="font-size:.6rem;opacity:.7">★ Premium</span>':''}`;
+    grid.appendChild(el);
+  });
+}
+buildAlcGrid();
+
+function toggleAlc(i,el){
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel'))selectedAlcohols.add(i);
+  else selectedAlcohols.delete(i);
+  updateDevis();
+}
+function selectMoment(el,val){
+  document.querySelectorAll('.moment-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');selectedMoment=val;updateDevis();
+}
+function selectVerre(el,val){
+  document.querySelectorAll('.verre-item').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');selectedVerre=val;updateDevis();
+}
+
+function updateDevis(){
+  const inv=parseInt(document.getElementById('invites').value)||0;
+  const evt=document.getElementById('typeEvent').value||'—';
+  const date=document.getElementById('dateEvent').value;
+
+  document.getElementById('r-invites').textContent=inv||'—';
+  document.getElementById('r-event').textContent=evt;
+  document.getElementById('r-date').textContent=date?new Date(date).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'—';
+  document.getElementById('r-moment').textContent=selectedMoment||'—';
+
+  // Tarif
+  const hasCocktailChoice = cocktailMode==='mesure' || selectedCocktails.size>0;
+  let tarif=0, tarifLabel='—';
+
+  if(hasCocktailChoice && inv>0){
+    // Vérifier alcools premium
+    let hasPremium=false;
+    let hasMidAlc=false;
+    selectedAlcohols.forEach(idx=>{
+      if(alcoholsData[idx].premium)hasPremium=true;
+      else hasMidAlc=true;
+    });
+
+    if(hasPremium){
+      tarif=12;
+      tarifLabel='12 € / invité ★';
+    } else if(hasMidAlc || selectedAlcohols.size>0){
+      tarif=10;
+      tarifLabel='10 € / invité';
+    } else {
+      tarif=8;
+      tarifLabel='8 € / invité';
+    }
+
+    // Show MDO
+    document.getElementById('r-mdo-row').style.display='flex';
+    document.getElementById('r-mdo-row').className='recap-mdo';
+  } else {
+    document.getElementById('r-mdo-row').style.display='none';
+  }
+
+
+  if(inv>0 && tarif>0){
+    const sousTotal=inv*tarif;
+    const total=sousTotal+150;
+    document.getElementById('r-sous-total').textContent=sousTotal.toLocaleString('fr-FR')+' €';
+    document.getElementById('r-total').textContent=total.toLocaleString('fr-FR')+' €';
+    const pct=Math.min((total/5000)*100,100);
+    document.getElementById('priceBar').style.width=pct+'%';
+  } else {
+    document.getElementById('r-sous-total').textContent='—';
+    document.getElementById('r-total').textContent='—';
+    document.getElementById('priceBar').style.width='0%';
+  }
+}
+
+function sendDevis(){
+  const prenom=document.getElementById('prenom').value||'Client';
+  const email=document.getElementById('email').value||'—';
+  document.getElementById('cp-prenom').textContent=prenom;
+  document.getElementById('cp-email').textContent=email;
+  document.getElementById('confirmModal').classList.add('show');
+}
+
+// ── VIDEO SLOTS ──
+function openVideoSlot(slot, num) {
+  if (slot.classList.contains('editing')) {
+    slot.classList.remove('editing');
+  } else {
+    document.querySelectorAll('.video-slot').forEach(s => s.classList.remove('editing'));
+    slot.classList.add('editing');
+    slot.querySelector('.video-url-input').focus();
+  }
+}
+
+function setVideoSlot(input, num) {
+  const slot = input.closest('.video-slot');
+  let url = input.value.trim();
+  if (!url) return;
+  let embedUrl = url;
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if (ytMatch) {
+    embedUrl = 'https://www.youtube.com/embed/' + ytMatch[1] + '?autoplay=1&controls=1';
+  }
+  const existing = slot.querySelector('iframe');
+  if (existing) existing.remove();
+  const iframe = document.createElement('iframe');
+  iframe.src = embedUrl;
+  iframe.allow = 'autoplay; fullscreen';
+  iframe.allowFullscreen = true;
+  slot.appendChild(iframe);
+  slot.classList.add('has-video');
+  slot.classList.remove('editing');
+}
+
+// ── AVIS ──
+const avisData=[
+  {name:'Amélie & Julien',event:'Mariage — Juin 2024',stars:5,text:'Une prestation absolument parfaite ! Les cocktails étaient délicieux et l\'équipe d\'une gentillesse rare. Tous nos invités ont adoré !',type:'Mariage',avatar:'💑',avatarBg:'#f0d0e0'},
+  {name:'Sarah M.',event:'Anniversaire 30 ans — Décembre 2023',stars:5,text:'J\'avais commandé Cocksinels pour mes 30 ans et je n\'ai pas été déçue. Le Lady Bug World est devenu mon préféré !',type:'Anniversaire',avatar:'🎂',avatarBg:'#d4b8e0'},
+  {name:'Thomas R. — DRH Nexus Group',event:'Gala Corporate — Novembre 2024',stars:5,text:'Service irréprochable, ponctualité, cocktails raffinés. Notre équipe a été impressionnée. Partenaire à reconduire !',type:'Corporate',avatar:'🏢',avatarBg:'#c8d8e8'},
+  {name:'Léa & Maxime',event:'Mariage champêtre — Août 2024',stars:5,text:'Le Virgin Mojito pour les enfants était une attention magnifique. Tout était parfait, du service à la présentation.',type:'Mariage',avatar:'🌸',avatarBg:'#d0e8d0'},
+  {name:'Fatou D.',event:'Soirée privée — Octobre 2024',stars:5,text:'Je recommande à 1000% ! Le Yummy Nana et le Purple Kiss ont fait l\'unanimité. Mes amis me demandent encore le contact !',type:'Soirée privée',avatar:'🎉',avatarBg:'#f0c8d0'},
+  {name:'Nicolas & Camille',event:'Mariage — Avril 2024',stars:5,text:'Cocksinels a transformé notre cocktail de mariage en une expérience mémorable. Le service est professionnel et chaleureux.',type:'Mariage',avatar:'💍',avatarBg:'#f8e8e8'},
+];
+function buildAvis(){
+  const grid=document.getElementById('avisGrid');
+  grid.innerHTML='';
+  avisData.forEach((a,idx)=>{
+    const el=document.createElement('div');
+    el.className='avis-card';
+    el.style.animationDelay=idx*0.08+'s';
+    const stars='⭐'.repeat(a.stars);
+    el.innerHTML=`
+      <div class="avis-header">
+        <div class="avis-avatar" style="background:${a.avatarBg}">${a.avatar}</div>
+        <div class="avis-meta">
+          <div class="avis-name">${a.name}</div>
+          <div class="avis-stars">${stars}</div>
+        </div>
+      </div>
+      <div class="avis-text">${a.text}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-top:.8rem">
+        <span class="avis-type-badge">${a.type}</span>
+        <span class="avis-event">${a.event}</span>
+      </div>
+      <div class="avis-verified">✓ Avis vérifié</div>`;
+    grid.appendChild(el);
+  });
+}
+buildAvis();
+
+// ── REVEAL ──
+function triggerReveal(){
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+triggerReveal();
+</script>
+</body>
+</html>
